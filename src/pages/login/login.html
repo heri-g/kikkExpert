@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="kikkRed">
+    <ion-title>
+      Login
+    </ion-title>
+    <ion-buttons start>
+      <!-- <button ion-button >
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <form (ngSubmit)="login()" [formGroup]="loginForm">
+        <ion-grid>
+            <ion-row>
+                <ion-col text-center id="loginLogo">
+                    <img src="assets/imgs/kikkLogo.png" alt="">
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding no-margin>
+                <ion-col>
+                    <ion-item no-padding no-margin>
+                        <ion-label color="kikkRed">
+                            <ion-icon name="person-outline" item-start></ion-icon>
+                        </ion-label>
+                        <ion-input placeholder="Username" formControlName="email"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding no-margin>
+                <ion-col>
+                    <ion-item  no-padding no-margin>
+                        <ion-label color="kikkRed">
+                            <ion-icon name="lock-outline" item-start></ion-icon>
+                        </ion-label>
+                        <ion-input type="password" placeholder="Password"  formControlName="password"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row id="loginRow">
+                <ion-col no-padding>
+                    <button ion-button medium round full color="kikkRed" (click)="login()" id="loginBtn">Log In</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
+</ion-content>

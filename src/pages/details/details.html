@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-navbar color="kikkRed">
+        <ion-title>
+            Product Details
+        </ion-title>
+        <ion-buttons start>
+        <button ion-button (click)="dismiss()">
+            <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+        </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            {{ title }}
+        </ion-card-header>
+        <ion-card-content>
+            <p>SKU: {{ sku }}</p>
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        UPC:
+                    </ion-col>
+                    <ion-col>
+                        {{ upc }}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        Split:
+                    </ion-col>
+                    <ion-col>
+                        {{ splitQty }}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        Stock:
+                    </ion-col>
+                    <ion-col>
+                        <ion-badge item-end>{{ stock }}</ion-badge>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        US Wholesale:
+                    </ion-col>
+                    <ion-col>
+                        ${{ usWholesale }}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        CA Wholesale:
+                    </ion-col>
+                    <ion-col>
+                        ${{ caWholesale }}
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        MSRP:
+                    </ion-col>
+                    <ion-col>
+                        ${{ msrp }}
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content>
+            View <a [href]="getExpertData(sku)">Sell Sheet</a>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

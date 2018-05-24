@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar color="kikkRed">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Stock Feed</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content *ngIf="isUser"v>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Search" (ionInput)="getFeed($event)" debounce="100"></ion-searchbar>
+  </ion-toolbar>
+  
+  <ion-list no-lines>
+    <ion-item *ngFor="let feed of feeds">
+      <ion-thumbnail item-start>
+        <img [src]="getThmbnlURL(feed.record.product)">
+      </ion-thumbnail>
+      <button ion-item clear (click)="getDetailsPage(feed)">
+        <h2>{{ feed.record.description }}</h2>
+        <p>{{ feed.record.product }}</p>
+      </button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-content *ngIf="!isUser">
+  <ion-card>
+    <ion-card-content>
+      <h2>Please log In To View The Stock Feed</h2>
+      <button ion-button medium round full color="kikkRed" (click)="authInit()" id="loginBtn">Log In</button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
