@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { ViewController, Platform, Nav, NavParams } from "ionic-angular";
+import { ViewController, Platform, Nav, NavParams, Keyboard } from "ionic-angular";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthProvider } from "../../providers/auth";
@@ -18,11 +18,15 @@ export class LoginPage {
     public loginForm: FormGroup;
     public loginError: string;
 
-    constructor(public viewCtrl: ViewController, public platform: Platform, public params: NavParams, public formBuilder: FormBuilder, private auth: AuthProvider) {
+    constructor(public viewCtrl: ViewController, public platform: Platform, public params: NavParams, public formBuilder: FormBuilder, private auth: AuthProvider, public keyboard: Keyboard) {
         this.loginForm = formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
 			password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
         })
+    }
+
+    cancel() {
+        this.viewCtrl.dismiss();
     }
 
     login() {
@@ -38,11 +42,14 @@ export class LoginPage {
 		};
 		this.auth.signInWithEmail(credentials)
         .then( () => {
-                this.viewCtrl.dismiss();
-                // this.nav.setRoot(HomePage);
+                this.viewCtrl.dismiss().catch(() => {});
             },
             error => this.loginError = error.message
         );
+    }
+
+    closeKeyboard() {
+        this.keyboard.close();
     }
 
 }

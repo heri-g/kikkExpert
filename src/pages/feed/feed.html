@@ -4,16 +4,25 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Stock Feed</ion-title>
+    <!-- <button float-right ion-button icon-start clear color="light" icon-only id="dots" *ngIf="isUser" (click)="showSearch()">
+      <ion-icon name='search-outline' is-active="false"></ion-icon>
+    </button> -->
   </ion-navbar>
+  <!-- <ion-toolbar ion-fixed color="kikkRedLight" *ngIf="isUser">
+    <ion-searchbar placeholder="Search" (ionInput)="getFeed($event)" debounce="100"></ion-searchbar>
+  </ion-toolbar> -->
 </ion-header>
 
-<ion-content *ngIf="isUser"v>
-  <ion-toolbar>
-    <ion-searchbar placeholder="Search" (ionInput)="getFeed($event)" debounce="100"></ion-searchbar>
+
+<ion-content *ngIf="isUser">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles"></ion-refresher-content>
+  </ion-refresher>
+  <ion-toolbar color="kikkRedLight">
+    <ion-searchbar placeholder="Search" (ionInput)="getFeed($event)" (keyup.enter)="closeKeyboard()" debounce="100"></ion-searchbar>
   </ion-toolbar>
-  
-  <ion-list no-lines>
-    <ion-item *ngFor="let feed of feeds">
+  <ion-list no-lines [virtualScroll]="feeds">
+    <ion-item *virtualItem="let feed">
       <ion-thumbnail item-start>
         <img [src]="getThmbnlURL(feed.record.product)">
       </ion-thumbnail>
@@ -27,9 +36,19 @@
 
 <ion-content *ngIf="!isUser">
   <ion-card>
-    <ion-card-content>
-      <h2>Please log In To View The Stock Feed</h2>
-      <button ion-button medium round full color="kikkRed" (click)="authInit()" id="loginBtn">Log In</button>
+    <ion-card-content text-center>
+      <ion-grid>
+        <ion-row text-center>
+          <ion-col>
+            <h2>Please log In</h2>
+          </ion-col>
+        </ion-row>
+        <ion-row text-center id="loginRow">
+          <ion-col text-center >
+            <button ion-button medium round full color="kikkRed" (click)="authInit()" id="loginBtn">Log In</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
 </ion-content>

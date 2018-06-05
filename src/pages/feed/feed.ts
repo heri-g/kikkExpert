@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, Keyboard, Refresher } from 'ionic-angular';
+import { Network } from '@ionic-native/network';
+import { Toast } from '@ionic-native/toast';
 
 import { DetailsPage } from "../details/details";
 import { LoginPage } from "../login/login";
@@ -18,20 +20,60 @@ export class FeedPage {
   public feeds;
   items: any[];
 
+  dataFlag: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     private feedProvider: FeedProvider,
     public modalCtrl: ModalController,
-    private auth: AuthProvider
+    private auth: AuthProvider,
+    public keyboard: Keyboard,
+    private network: Network,
+    private toast: Toast
   ) {
   }
 
-  ionViewCanEnter() {
+  ionViewDidEnter() {
+
+    // NETWORK DETECTION CODE
+    // watch network for a disconnect
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      // console.log('network was disconnected :-(');
+      this.emptyRefresh();
+      this.feeds.length = 0;
+    });
+
+    // stop disconnect watch
+    disconnectSubscription.unsubscribe();
+
+
+    // watch network for a connection
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      // console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+      // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+      setTimeout(() => {
+        if (this.network.type !== 'none') {
+          console.log('we got a wifi connection, woohoo!');
+          this.initializeItems();
+        }
+      }, 3000);
+    });
+
+    // stop connect watch
+    connectSubscription.unsubscribe();
+
+  }
+
+  ionViewDidLoad() {
     this.auth.afAuth.authState.subscribe( user => {
         if (user) {
           this.initializeItems();
+          this.isUser = true;
         } else {
           this.isUser = false;
+          this.feeds.length = 0;
         }
       }
     );
@@ -68,11 +110,10 @@ export class FeedPage {
       caWholesale: caWholesale,
       msrp: msrp
     });
-    // console.log(details);
   }
 
   getFeed(ev: any) {
-    // this.initializeItems();
+    
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.feeds = this.feeds.filter((item) => {
@@ -92,7 +133,39 @@ export class FeedPage {
 
   async authInit() {
     const modal = await this.modalCtrl.create(LoginPage);
+    modal.onDidDismiss( () => {
+      this.dataFlag = true;
+      if (this.dataFlag == true) {
+        this.navCtrl.setRoot(this.navCtrl.getActive().component); 
+      }
+    });
     modal.present();
+  }
+
+  closeKeyboard() {
+    this.keyboard.close();
+  }
+
+  doRefresh(refresher) {
+    this.initializeItems();
+    // this.feedProvider.updateData().subscribe( update => {
+    //   this.feeds = update;
+    // })
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
+  }
+
+  emptyRefresh() {
+    this.toast.show(`I'm a toast`, '5000', 'center').subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );
+    setTimeout(() => {
+      this.navCtrl.setRoot(this.navCtrl.getActive().component);
+    }, 6000);
+    
   }
 
 }

@@ -2,13 +2,13 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
 import { AuthProvider } from "../providers/auth";
 
 import { HomePage } from '../pages/home/home';
 import { FeedPage } from '../pages/feed/feed';
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,15 +27,20 @@ export class MyApp {
 
   private signoutBtn: boolean;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private auth: AuthProvider) {
+  constructor(
+    public platform: Platform, 
+    public statusBar: StatusBar, 
+    public splashScreen: SplashScreen, 
+    private auth: AuthProvider, 
+    private iab: InAppBrowser
+  ) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { icon: this.homeIcon, title: 'Home', component: HomePage },
       { icon: this.feedIcon, title: 'Stock Feed', component: FeedPage },
-      { icon: this.aboutIcon, title: 'About', component: AboutPage },
-      { icon: this.contactIcon, title: 'Contact', component: ContactPage }
+      { icon: this.aboutIcon, title: 'About', component: AboutPage }
     ];
 
   }
@@ -64,22 +69,6 @@ export class MyApp {
 
   }
 
-  // loggedIn() {
-  //   this.auth.afAuth.authState
-  //   .subscribe(
-  //     user => {
-  //       if (user) {
-  //         this.user = false;
-  //       } else {
-  //         this.user = false;
-  //       }
-  //     },
-  //     () => {
-  //       // this.user = true;
-  //     }
-  //   );
-  // }
-
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
@@ -91,4 +80,16 @@ export class MyApp {
     this.signoutBtn = false;
 		this.nav.setRoot(HomePage);
   }
+  
+  contactUs(url: string) {
+    const options: InAppBrowserOptions = {
+      zoom: 'no',
+    }
+
+    let target = "_blank";
+    const browser = this.iab.create(url,target,options);
+
+    browser.show();
+  }
+
 }

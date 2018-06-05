@@ -4,10 +4,10 @@
       Login
     </ion-title>
     <ion-buttons start>
-      <!-- <button ion-button >
-        <span ion-text color="primary" showWhen="ios">Cancel</span>
+      <button ion-button (click)="cancel()">
+        <span ion-text color="light" showWhen="ios">Cancel</span>
         <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
-      </button> -->
+      </button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -31,16 +31,21 @@
             </ion-row>
             <ion-row no-padding no-margin>
                 <ion-col>
-                    <ion-item  no-padding no-margin>
+                    <ion-item no-padding no-margin>
                         <ion-label color="kikkRed">
                             <ion-icon name="lock-outline" item-start></ion-icon>
                         </ion-label>
-                        <ion-input type="password" placeholder="Password"  formControlName="password"></ion-input>
+                        <ion-input type="password" placeholder="Password"  formControlName="password" (keyup.enter)="closeKeyboard()"></ion-input>
                     </ion-item>
                 </ion-col>
             </ion-row>
-            <ion-row id="loginRow">
-                <ion-col no-padding>
+            <ion-row text-center *ngIf="loginError">
+                <ion-col>
+                    <p><ion-icon name="warning-outline"></ion-icon> {{ loginError }}</p>
+                </ion-col>
+            </ion-row>
+            <ion-row center id="loginRow">
+                <ion-col center no-padding>
                     <button ion-button medium round full color="kikkRed" (click)="login()" id="loginBtn">Log In</button>
                 </ion-col>
             </ion-row>

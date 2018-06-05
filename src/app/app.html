@@ -11,6 +11,10 @@
         <ion-icon name="{{ p.icon }}" item-start></ion-icon>
         {{ p.title }}
       </button>
+      <button menuClose ion-item detail-none (click)="contactUs('https://kikkerland.com/pages/contact-us')">
+        <ion-icon name="chatbubbles-outline" item-start></ion-icon>
+        Contact Us
+      </button>
       <button menuClose ion-item detail-none (click)="logout()" *ngIf="signoutBtn">
         <ion-icon name="log-out-outline" item-start></ion-icon>
         Sign Out

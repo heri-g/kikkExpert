@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController, NavParams } from 'ionic-angular';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
 @Component({
   selector: 'page-details',
@@ -16,13 +17,13 @@ export class DetailsPage {
   public caWholesale;
   public msrp;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private iab: InAppBrowser) {
 
   }
 
-  getExpertData() {
-    return `http://kikkerlandproduct.expert/public/sellsheet.php?sku=${this.sku}`;
-  }
+  // getExpertData() {
+  //   return `http://kikkerlandproduct.expert/public/sellsheet.php?sku=${this.sku}`;
+  // }
 
   ionViewWillEnter(){
     this.sku = this.navParams.get('sku');
@@ -34,6 +35,17 @@ export class DetailsPage {
     this.caWholesale = this.navParams.get('caWholesale');
     this.msrp = this.navParams.get('msrp');
     console.log(Number(this.usWholesale).toFixed(2));
+  }
+
+  getExpertData() {
+    const options: InAppBrowserOptions = {
+      zoom: 'no',
+    }
+
+    let target = "_blank";
+    const browser = this.iab.create(`http://kikkerlandproduct.expert/public/sellsheet.php?sku=${this.sku}`,target,options);
+
+    browser.show();
   }
 
   dismiss() {

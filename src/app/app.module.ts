@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Network } from '@ionic-native/network';
+import { Toast } from '@ionic-native/toast';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -13,7 +16,6 @@ import { HomePage } from '../pages/home/home';
 import { FeedPage } from '../pages/feed/feed';
 import { DetailsPage } from '../pages/details/details';
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { LoginPage } from "../pages/login/login";
 
 import { AuthProvider } from "../providers/auth";
@@ -29,7 +31,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     FeedPage,
     DetailsPage,
     AboutPage,
-    ContactPage,
     LoginPage,
   ],
   imports: [
@@ -47,7 +48,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     FeedPage,
     DetailsPage,
     AboutPage,
-    ContactPage,
     LoginPage,
   ],
   providers: [
@@ -55,7 +55,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    FeedProvider
+    FeedProvider,
+    InAppBrowser,
+    Network,
+    Toast
   ]
 })
 export class AppModule {}
